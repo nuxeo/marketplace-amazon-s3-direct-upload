@@ -31,11 +31,6 @@
       <type>zip</type>
       <scope>provided</scope>
     </dependency>
-
-    <dependency>
-      <groupId>org.nuxeo.ecm.core</groupId>
-      <artifactId>nuxeo-core-binarymanager-s3-web-ui</artifactId>
-    </dependency>
   </dependencies>
 
   <build>
