@@ -31,43 +31,8 @@
       <artifact:file key="org.nuxeo.ecm.distribution:nuxeo-nxr-server::zip" />
     </copy>
 
-    <!-- S3 Direct Upload -->
-    <!-- Nuxeo bundles -->
-    <copy todir="${outdir}/nxr/bundles" overwrite="true">
-      <artifact:dependencies key="org.nuxeo.ecm.core:nuxeo-core-binarymanager-s3-web-ui:::">
-        <includes>
-          <artifact groupId="org.nuxeo*" />
-        </includes>
-        <excludes>
-          <artifact groupId="org.nuxeo.lib*" />
-          <artifact scope="test" />
-          <artifact scope="provided" />
-          <artifact type="pom" />
-        </excludes>
-      </artifact:dependencies>
-    </copy>
-    <!-- Third-party libraries -->
-    <copy todir="${outdir}/nxr/lib" overwrite="true">
-      <artifact:dependencies key="org.nuxeo.ecm.core:nuxeo-core-binarymanager-s3-web-ui:::">
-        <includes>
-          <artifact groupId="!org.nuxeo*" scope="!test" />
-          <artifact groupId="org.nuxeo.lib*" scope="!test" />
-        </includes>
-      </artifact:dependencies>
-    </copy>
     <nx:rmdups dir="${outdir}/nxr/lib" />
-    <zip destfile="${outdir}/nxr-server-${maven.project.version}.zip" basedir="${outdir}/nxr" />
-    <artifact:attach file="${outdir}/nxr-server-${maven.project.version}.zip" classifier="nxr-server" type="zip" />
     <!-- Diff against Nuxeo Server -->
-    <nx:zipdiff file1="${outdir}/nxr-server-${maven.project.version}.zip"
-                file2="${outdir}/nuxeo-nxr-server-${nuxeo.distribution.version}.zip"
-                includesfile="${outdir}/includes"
-                excludesfile="${outdir}/excludesfile"
-                patternsetid="s3-direct-upload.versus.server">
-    </nx:zipdiff>
-    <unzip src="${outdir}/nxr-server-${maven.project.version}.zip" dest="${outdir}/marketplace/install">
-      <patternset refid="s3-direct-upload.versus.server" />
-    </unzip>
 
     <!-- Generate install.xml content -->
     <var name="install.bundles" value="" />
@@ -105,7 +70,6 @@
 
     <copy file="src/main/resources/install.xml" todir="${outdir}/marketplace" overwrite="true">
       <filterset>
-        <filter token="BUNDLES" value="${install.bundles}" />
         <filter token="LIBS" value="${install.libs}" />
         <filter token="PROPERTIES" value="${install.properties}" />
         <filter token="TEMPLATES" value="${install.templates}" />
